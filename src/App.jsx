@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './screen/Login';
 import Dashboard from './screen/Dashboard';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Cek apakah user sudah login (biasanya cek token di localStorage)
-  // Di sini kita gunakan state sederhana
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = localStorage.getItem('accessTokens');
+      if (!user) {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
+  }, []);
   
   if (!isAuthenticated) {
     return <Login onLogin={setIsAuthenticated} />;
